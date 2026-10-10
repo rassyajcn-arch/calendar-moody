@@ -26,13 +26,13 @@ const d = (plus) => {
 const SAMPLE = () => [
   { id: "s1", sample: true, type: "konten", title: "Reels Moody Lifter — cara bikin", date: d(1), time: "18:00", platform: "IG Reels", pillar: "Menu & Produk", status: "produksi", pic: "", caption: "", notes: "Close-up tuang susu, slow motion.", created: Date.now() },
   { id: "s2", sample: true, type: "event", title: "Live Akustik Jumat Malam", date: d(3), time: "19:30", color: "crema", notes: "Cek sound system jam 17.00", created: Date.now() },
-  { id: "s3", sample: true, type: "ide", title: "Seri 'Kenalan sama barista'", pillar: "Behind the Scene", status: "ide", notes: "Satu barista per minggu, 3 pertanyaan ringan.", created: Date.now() },
+  { id: "s3", sample: true, type: "project", title: "Rilis merchandise Moody Space", date: d(14), status: "draft", pic: "", notes: "Tentukan desain tote bag & stiker, cari vendor, hitung prime cost.", created: Date.now() },
 ];
 
 // ---------- validasi ringan ----------
 const str = (v, max) => (typeof v === "string" ? v.slice(0, max) : undefined);
 const num = (v) => (typeof v === "number" && isFinite(v) ? v : undefined);
-const TYPES = ["konten", "event", "ide", "profile"];
+const TYPES = ["konten", "event", "project", "ide", "profile"];
 
 function cleanComment(c) {
   if (!c || typeof c !== "object") return null;
