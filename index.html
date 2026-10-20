@@ -307,6 +307,32 @@ input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);margin:1px
 .seg2 button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .hint{font-size:12.5px;color:var(--muted)}
 @media (max-width:700px){.plan{grid-template-columns:1fr}}
+/* MoM: editor jadi halaman catatan penuh */
+aside.editor.page{left:0;top:0;width:100%;height:100%;max-height:none;border:0;border-radius:0;background:var(--surface);box-shadow:none;transform:translateY(14px)}
+aside.editor.page.on{transform:none}
+.editor.page .ed-head{padding-block:12px;padding-inline:max(16px,calc((100% - 780px)/2));padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.editor.page .ed-head h2{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+.editor.page .ed-body{padding-inline:max(16px,calc((100% - 780px)/2));padding-block:30px 80px;gap:16px}
+.editor.page .ed-foot{padding-inline:max(16px,calc((100% - 780px)/2));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.editor.page #lbl-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.editor.page #f-title{border:0;background:transparent;padding:0;font-family:var(--f-display);font-weight:900;font-size:clamp(28px,4.4vw,42px);line-height:1.1;letter-spacing:-.01em}
+.editor.page #f-title:focus{outline:none}
+.editor.page .row2{display:block}
+.editor.page .row2 .field,.editor.page .prop{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:10px}
+.editor.page #f-pic{width:min(320px,100%);justify-self:start;background:var(--surface-2);border:0;padding:6px 10px}
+.editor.page .prop .linkrow input{background:var(--surface-2);border:0;padding:6px 10px}
+.editor.page .prop .statuses label{background:var(--surface)}
+.editor.page #f-date{width:auto;justify-self:start;border:0;background:var(--surface-2);padding:6px 10px;font-weight:600}
+.editor.page .props-end{border-bottom:1px solid var(--line);margin-block:4px 8px}
+.editor.page #lbl-notes,.editor.page #lbl-tasks,.editor.page #lbl-cm{font-family:var(--f-display);font-weight:800;font-size:19px;text-transform:none;letter-spacing:0;color:var(--ink)}
+.editor.page #f-notes{border:0;background:transparent;padding:4px 0;font-size:16px;line-height:1.75;min-height:24vh;resize:none;overflow:hidden}
+.editor.page #f-notes:focus{outline:none}
+.editor.page .mwrap{border-bottom:1px solid var(--line);padding-bottom:18px}
+.editor.page .trow{background:transparent;border-color:transparent;padding:4px 4px 6px 2px}
+.editor.page .trow:hover,.editor.page .trow:focus-within{background:var(--bg);border-color:var(--line)}
+.editor.page .trow input[type=text]{font-size:15.5px}
+.editor.page #cm-wrap{border-top:1px solid var(--line);padding-top:18px;margin-top:8px}
+@media (max-width:640px){.editor.page .row2 .field,.editor.page .prop{grid-template-columns:96px minmax(0,1fr)}aside.editor.page{width:100%}}
 
 footer.note{margin-top:22px;font-size:13px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between}
 
@@ -444,15 +470,16 @@ footer.note{margin-top:22px;font-size:13px;color:var(--muted);display:flex;gap:1
       <div class="field"><label for="f-pillar">Content pillar</label><select id="f-pillar"></select></div>
     </div>
     <div class="field" data-for="konten"><span class="flabel">Status</span><div class="statuses" id="f-status"></div></div>
-    <div class="field" data-for="project"><span class="flabel">Status campaign</span><div class="statuses" id="f-cstatus"></div></div>
-    <div class="field" data-for="konten project"><label for="f-pic" id="lbl-pic">PIC</label><input id="f-pic" maxlength="60" placeholder="Siapa yang pegang?"></div>
-    <div class="field" data-for="mom"><span class="flabel">Yang hadir</span><div class="whopick" id="f-att"></div></div>
+    <div class="field prop" data-for="project"><span class="flabel">Status</span><div class="statuses" id="f-cstatus"></div></div>
+    <div class="field prop" data-for="konten project"><label for="f-pic" id="lbl-pic">PIC</label><input id="f-pic" maxlength="60" placeholder="Siapa yang pegang?"></div>
+    <div class="field prop" data-for="mom"><span class="flabel">Yang hadir</span><div class="whopick" id="f-att"></div></div>
     <div class="field" data-for="konten">
       <label for="f-caption">Caption</label>
       <textarea id="f-caption" placeholder="Tulis caption di sini… hashtag boleh langsung di dalamnya"></textarea>
       <div class="counter"><span id="cc-chars">0 / 2200</span><span id="cc-tags">0 / 30 hashtag</span></div>
     </div>
-    <div class="field" data-for="konten project"><label for="f-link" id="lbl-link">Link aset / postingan</label><div class="linkrow"><input id="f-link" type="url" inputmode="url" placeholder="https://…"><a id="f-link-open" class="linkopen" target="_blank" rel="noopener noreferrer" hidden>Buka ↗</a></div></div>
+    <div class="field prop" data-for="konten project"><label for="f-link" id="lbl-link">Link aset / postingan</label><div class="linkrow"><input id="f-link" type="url" inputmode="url" placeholder="https://…"><a id="f-link-open" class="linkopen" target="_blank" rel="noopener noreferrer" hidden>Buka ↗</a></div></div>
+    <div class="props-end" data-for="project mom"></div>
     <div class="field mwrap"><label for="f-notes" id="lbl-notes">Keterangan</label><textarea id="f-notes" placeholder="Shot list, referensi, kebutuhan properti, kolaborator…"></textarea><div class="mpop" id="npop" hidden></div></div>
     <div class="field" data-for="project mom"><span class="flabel" id="lbl-tasks">Yang harus disiapkan</span><div class="tasks-ed" id="f-tasks"></div><div><button class="btn" id="task-add" type="button">＋ Tambah</button></div></div>
     <div class="field" id="cm-wrap"><span class="flabel" id="lbl-cm">Komentar &amp; diskusi</span><div class="cm-list" id="cm-list"></div>
@@ -716,7 +743,7 @@ function renderMom(){
 function openEditor(it,preset={}){
   editingId=it?it.id:null; const d=it||{type:"konten",status:"ide",platform:PLATFORMS[0],pillar:PILLARS[0],...preset};
   const t=d.type||"konten";
-  $("#ed-title").textContent=it?(canWrite?(t==="project"?"Edit campaign":t==="mom"?"Edit MoM briefing":"Edit item"):"Detail"):(t==="project"?"Campaign baru":t==="mom"?"MoM briefing baru":"Item baru");
+  $("#ed-title").textContent=it?(canWrite?(t==="project"?"Campaign · "+cstat(d.status).label:t==="mom"?"MoM Briefing · "+fmtDate(d.date):"Edit item"):"Detail"):(t==="project"?"Campaign · catatan baru":t==="mom"?"MoM Briefing · catatan baru":"Item baru");
   $("#t-"+t).checked=true;
   $("#f-title").value=d.title||""; $("#f-date").value=d.date||""; $("#f-time").value=d.time||"";
   $("#f-platform").value=d.platform||PLATFORMS[0]; $("#f-pillar").value=d.pillar||PILLARS[0];
@@ -732,7 +759,7 @@ function openEditor(it,preset={}){
   ($("#ec-"+(d.color||"crema"))||$("#ec-crema")).checked=true;
   counters(); syncType(); updateLink(); renderMeta(it); renderComments(); $("#cm-text").value=""; hidePop();
   $("#editor").classList.add("on"); $("#scrim").classList.add("on"); $("#editor").setAttribute("aria-hidden","false");
-  $("#form").scrollTop=0;
+  $("#form").scrollTop=0; requestAnimationFrame(growNotes);
   if(!(window.matchMedia&&matchMedia("(pointer:coarse)").matches))setTimeout(()=>$("#f-title").focus(),60);
 }
 function closeEditor(){hidePop();$("#editor").classList.remove("on");$("#scrim").classList.remove("on");$("#editor").setAttribute("aria-hidden","true");editingId=null}
@@ -740,8 +767,8 @@ const curType=()=>document.querySelector('input[name="type"]:checked').value;
 const LABELS={
   konten:{title:"Judul",tph:"mis. Reels Moody Lifter — cara bikin",date:"Tanggal posting",notes:"Keterangan",nph:"Shot list, referensi, kebutuhan properti, kolaborator… Ketik @ untuk menandai teman"},
   event:{title:"Judul",tph:"mis. Live Akustik Jumat Malam",date:"Tanggal event",notes:"Keterangan",nph:"Lokasi, line up, partner/komunitas, hal yang perlu disiapkan… Ketik @ untuk menandai teman"},
-  project:{title:"Nama campaign",tph:"mis. Campaign Natal & Tahun Baru",date:"Target jalan (opsional)",notes:"Ringkasan campaign",nph:"Tujuan, periode, target, budget kasar… Ketik @ untuk menandai teman",pic:"PIC campaign",link:"Link brief / referensi",tasks:"Yang harus disiapkan",cm:"Ide & diskusi",cph:"Tulis ide atau komentar… ketik @ untuk tag teman (Ctrl+Enter kirim)"},
-  mom:{title:"Judul briefing",tph:"mis. Briefing mingguan",date:"Tanggal briefing",notes:"Hasil pembahasan",nph:"Poin yang dibahas dan keputusan yang diambil… Ketik @ untuk menandai teman",tasks:"Action item",cm:"Komentar & diskusi"}};
+  project:{title:"Nama campaign",tph:"Nama campaign",date:"Target jalan",notes:"Catatan campaign",nph:"Tulis rencana campaign di sini…\n\n• Tujuan & target\n• Periode dan channel\n• Budget kasar\n• Ide awal\n\nKetik @ untuk menandai teman",pic:"PIC",link:"Link brief",tasks:"Yang harus disiapkan",cm:"Ide & diskusi",cph:"Tulis ide atau komentar… ketik @ untuk tag teman (Ctrl+Enter kirim)"},
+  mom:{title:"Judul briefing",tph:"Judul briefing",date:"Tanggal",notes:"Hasil pembahasan",nph:"Tulis catatan briefing di sini…\n\n• Evaluasi minggu lalu\n• Yang dibahas hari ini\n• Keputusan yang diambil\n\nKetik @ untuk menandai teman",tasks:"Action item",cm:"Komentar & diskusi"}};
 function syncType(){
   const t=curType(),L=LABELS[t];
   document.querySelectorAll("#editor [data-for]").forEach(el=>el.hidden=!el.dataset.for.split(" ").includes(t));
@@ -751,7 +778,10 @@ function syncType(){
   $("#lbl-tasks").textContent=L.tasks||""; $("#lbl-cm").textContent=L.cm||"Komentar & diskusi";
   $("#cm-text").placeholder=L.cph||"Tulis komentar… ketik @ untuk tag teman (Ctrl+Enter kirim)";
   if(t==="project"||t==="mom")renderTaskEd();
+  $("#editor").classList.toggle("page",t==="mom"||t==="project"); growNotes();
 }
+function growNotes(){const n=$("#f-notes");if(!$("#editor").classList.contains("page")){n.style.height="";return}n.style.height="auto";n.style.height=n.scrollHeight+"px"}
+$("#f-notes").addEventListener("input",growNotes);
 function renderTaskEd(){
   const isMom=curType()==="mom",dis=canWrite?"":"disabled";
   $("#f-tasks").innerHTML=edTasks.length?edTasks.map((x,i)=>`<div class="trow" data-ti="${i}">
