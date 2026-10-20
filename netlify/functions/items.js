@@ -1,6 +1,7 @@
 // Moody Space Calendar — API data bersama
 // GET  /api/items            → { ok, items }
 // POST /api/items  { action } → { ok, items }
+// Jenis item: konten, event, project (campaign), mom (MoM briefing), ide (data lama), profile.
 //   action: upsert {item} · delete {id} · deleteSample
 //           addComment {id, comment} · deleteComment {id, commentId}
 // Data disimpan di Netlify Blobs (store "moody-calendar", key "items").
@@ -32,7 +33,21 @@ const SAMPLE = () => [
 // ---------- validasi ringan ----------
 const str = (v, max) => (typeof v === "string" ? v.slice(0, max) : undefined);
 const num = (v) => (typeof v === "number" && isFinite(v) ? v : undefined);
-const TYPES = ["konten", "event", "project", "ide", "profile"];
+const TYPES = ["konten", "event", "project", "mom", "ide", "profile"];
+
+function cleanTask(t) {
+  if (!t || typeof t !== "object") return null;
+  const out = { id: str(t.id, 40), text: str(t.text, 300), done: t.done === true, pic: str(t.pic, 40), due: str(t.due, 20) };
+  if (!out.pic) delete out.pic;
+  if (!out.due) delete out.due;
+  return out.id && out.text ? out : null;
+}
+function cleanPing(p) {
+  if (!p || typeof p !== "object") return null;
+  const out = { to: str(p.to, 40), by: str(p.by, 40), at: num(p.at) ?? Date.now(), k: p.k === "task" ? "task" : "mention", text: str(p.text, 200) };
+  if (!out.text) delete out.text;
+  return out.to && out.by ? out : null;
+}
 
 function cleanComment(c) {
   if (!c || typeof c !== "object") return null;
@@ -61,6 +76,9 @@ function cleanItem(it) {
     createdBy: str(it.createdBy, 40), updatedBy: str(it.updatedBy, 40),
     sample: it.sample === true ? true : undefined,
     comments: Array.isArray(it.comments) ? it.comments.map(cleanComment).filter(Boolean).slice(-300) : undefined,
+    tasks: Array.isArray(it.tasks) ? it.tasks.map(cleanTask).filter(Boolean).slice(0, 100) : undefined,
+    attendees: Array.isArray(it.attendees) ? it.attendees.filter((a) => typeof a === "string").slice(0, 30).map((a) => a.slice(0, 40)) : undefined,
+    pings: Array.isArray(it.pings) ? it.pings.map(cleanPing).filter(Boolean).slice(-100) : undefined,
   };
   Object.keys(out).forEach((k) => (out[k] === undefined || out[k] === "") && k !== "title" && delete out[k]);
   return out;
